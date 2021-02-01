@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../values.dart';
+import '../colors.dart';
 import '../firebase.dart';
 import '../functins.dart';
 import './loading.dart';
@@ -23,14 +23,15 @@ class _AddEventState extends State<AddEvent> {
       create: DateTime.now(),
       edit: DateTime.now(),
       index: 0);
-  // File _image;
   TextEditingController t1 = TextEditingController(),
       t2 = TextEditingController();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
+    // If the passed Note object is null, then the screen is for adding a note.
+    // If it is not null, Then the screen is for editing a note.
     if (widget.note != null) {
       addval = widget.note;
       t1.text = addval.title;
@@ -103,42 +104,6 @@ class _AddEventState extends State<AddEvent> {
                               fillColor: colors[1]),
                         )),
                     Expanded(flex: 24, child: SizedBox()),
-                    // if (widget.note.index == -1)
-                    //   Expanded(
-                    //     flex: 150,
-                    //     child: Column(children: <Widget>[
-                    //       // Expanded(
-                    //       //   flex: 5,
-                    //       //   child: _image == null
-                    //       //       ? Center(
-                    //       //           child: Text('No Image Added!',
-                    //       //               textAlign: TextAlign.center,
-                    //       //               style:
-                    //       //                   TextStyle(color: Colors.grey[400])))
-                    //       //       : Container(
-                    //       //           child:
-                    //       //               Image.file(_image, fit: BoxFit.cover)),
-                    //       // ),
-                    //       // Expanded(
-                    //       //     flex: 1,
-                    //       //     child: Row(
-                    //       //       children: [
-                    //       //         FlatButton.icon(
-                    //       //             onPressed: getImage,
-                    //       //             icon: Icon(Icons.add_a_photo),
-                    //       //             label: Text("Add Image")),
-                    //       //         FlatButton.icon(
-                    //       //             onPressed: () {
-                    //       //               setState(() {
-                    //       //                 _image = null;
-                    //       //               });
-                    //       //             },
-                    //       //             icon: Icon(Icons.delete),
-                    //       //             label: Text("Delete Image"))
-                    //       //       ],
-                    //       //     )),
-                    //     ]),
-                    //   ),
                     Expanded(flex: 24, child: SizedBox()),
                     Expanded(
                       flex: 25,

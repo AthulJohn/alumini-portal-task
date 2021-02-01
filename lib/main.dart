@@ -1,12 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+// Other Files
 import './elements/noteCard.dart';
-import './functins.dart';
 import './note.dart';
-import './values.dart';
+import 'colors.dart';
 import './Screens/addNote.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import './firebase.dart';
+//Flutter Packages
+import 'package:firebase_core/firebase_core.dart';
+import 'package:http/http.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +17,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,24 +31,38 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//Main Page
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void initdata() async {
+  // Get Notes from Firebase
+  void getdata() async {
     _notes = await CloudService().getevents();
-    // notes.sort((a, b) => a.index.compareTo(b.index));
-    // sorted = notes;
     setState(() {});
   }
 
+  // Get Quote of the Day
+  void getquote() async {
+    Response r = await get('https://quotes.rest/qod');
+    Map data = json.decode(r.body);
+    print(data.toString());
+    quote = '"' +
+        data['contents']['quotes'][0]['quote'] +
+        '"\n-' +
+        data['contents']['quotes'][0]['author'];
+    setState(() {});
+  }
+
+  // Delete a note
   void delete(int ind) {
     _notes.removeWhere((element) => element.index == ind);
     setState(() {});
   }
 
+  // Add/Update a note
   void add(Note n) {
     _notes.removeWhere((element) => element.index == n.index);
     _notes.add(n);
@@ -55,14 +70,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Note> _notes;
+  String quote = '``';
+
   @override
   void initState() {
     super.initState();
-    initdata();
+    getquote();
+    getdata();
   }
 
-  // List<Note> sorted = notes;
-  // bool sort = false, sear = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,41 +87,60 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: colors[3],
         title: Text(
           'Simple Notes',
-          // style: TextStyle(color: colors[2]),
         ),
       ),
-      body: _notes != null
-          ? _notes.length == 0
-              ? Center(
-                  child: Text("Empty..."),
-                )
-              : ListView(
-                  children: [
-                    for (int i = 0; i < (_notes.length / 2).ceil(); i++)
-                      Row(
+      body: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(), borderRadius: BorderRadius.circular(10)),
+            margin: EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
+            child: quote == '``'
+                ? Text('Quote of the Day Loading....')
+                : Text(
+                    'Quote of the Day\n' + quote,
+                    textAlign: TextAlign.center,
+                  ),
+          ),
+          Expanded(
+            child: _notes != null
+                ? _notes.length == 0
+                    ? Center(
+                        // If there are no notes...
+                        child: Text("Empty..."),
+                      )
+                    : ListView(
                         children: [
-                          Expanded(
-                              child: (NoteCard(
-                                  note: _notes[2 * i],
-                                  onChanged: initdata,
-                                  ins: add,
-                                  del: delete))),
-                          Expanded(
-                              child: (_notes.length > 2 * i + 1
-                                  ? NoteCard(
-                                      note: _notes[2 * i + 1],
-                                      onChanged: initdata,
-                                      del: delete,
-                                      ins: add,
-                                    )
-                                  : SizedBox()))
+                          for (int i = 0; i < (_notes.length / 2).ceil(); i++)
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: (NoteCard(
+                                        note: _notes[2 * i],
+                                        onChanged: getdata,
+                                        ins: add,
+                                        del: delete))),
+                                Expanded(
+                                    child: (_notes.length > 2 * i + 1
+                                        ? NoteCard(
+                                            note: _notes[2 * i + 1],
+                                            onChanged: getdata,
+                                            del: delete,
+                                            ins: add,
+                                          )
+                                        : SizedBox()))
+                              ],
+                            ),
                         ],
-                      ),
-                  ],
-                )
-          : Center(
-              child: Text("Fetching data..."),
-            ),
+                      )
+                : Center(
+                    // If the data is not yet arrived
+                    child: Text("Fetching data..."),
+                  ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: colors[3],
         onPressed: () async {
@@ -119,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ));
 
-          initdata();
+          getdata();
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
@@ -127,6 +162,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+// Code for Searching and sorting, incase required...
 
 // Row(
 //   children: [

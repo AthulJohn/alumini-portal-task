@@ -1,5 +1,5 @@
 import 'package:alumni/main.dart';
-import 'package:alumni/values.dart';
+import 'package:alumni/colors.dart';
 import 'package:flutter/material.dart';
 import '../Screens/noteScreen.dart';
 import '../functins.dart';
@@ -44,27 +44,6 @@ class NoteCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // if (note.image != '')
-                  //   FlatButton(
-                  //     onPressed: () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //             builder: (context) => Picture(note.image)),
-                  //       );
-                  //     },
-                  //   child: Container(
-                  //     margin: EdgeInsets.only(bottom: 10),
-                  //     decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.circular(10)),
-                  //     width: double.infinity,
-                  //     height: h(150, context),
-                  //     child: Image.network(
-                  //       note.image,
-                  //       fit: BoxFit.cover,
-                  //     ),
-                  //   ),
-                  // ),
                   Container(
                     child: Text(
                       note.title,
@@ -82,22 +61,6 @@ class NoteCard extends StatelessWidget {
                       maxLines: 4,
                     ),
                   ),
-                  // Container(
-                  //   height: h(40, context),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       Text(
-                  //         'Created on ${formatdate(note.create)}',
-                  //         style: TextStyle(fontSize: 13),
-                  //       ),
-                  //       Text(
-                  //         'Last edit on ${formatdate(note.edit)}',
-                  //         style: TextStyle(fontSize: 13),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ),

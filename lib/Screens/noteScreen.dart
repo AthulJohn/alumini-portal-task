@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './addNote.dart';
 import '../firebase.dart';
 import '../note.dart';
-import '../values.dart';
+import '../colors.dart';
 
 class NotePage extends StatefulWidget {
   final Note n;
@@ -45,7 +45,6 @@ class _NotePageState extends State<NotePage> {
                   color: colors[1],
                   padding: EdgeInsets.all(8),
                   child: ListView(
-                    // crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Container(
                           padding: EdgeInsets.all(8),
