@@ -8,7 +8,7 @@ import 'dart:io';
 
 class AddEvent extends StatefulWidget {
   final Note note;
-  AddEvent(this.note);
+  AddEvent({this.note});
   @override
   _AddEventState createState() => _AddEventState();
 }
@@ -20,9 +20,8 @@ class _AddEventState extends State<AddEvent> {
       desc: '',
       create: DateTime.now(),
       edit: DateTime.now(),
-      image: '',
-      index: notes.last.index + 1);
-  File _image;
+      index: 0);
+  // File _image;
   TextEditingController t1 = TextEditingController(),
       t2 = TextEditingController();
 
@@ -30,11 +29,12 @@ class _AddEventState extends State<AddEvent> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.note.index != -1) {
+    if (widget.note != null) {
       addval = widget.note;
       t1.text = addval.title;
       t2.text = addval.desc;
-    }
+    } else
+      addval.index = notes.length;
   }
 
   @override
@@ -153,7 +153,7 @@ class _AddEventState extends State<AddEvent> {
                                 load = true;
                               });
                               try {
-                                await CloudService().updateData(addval, _image);
+                                await CloudService().updateData(addval);
                               } catch (e) {
                                 print(e);
                               }

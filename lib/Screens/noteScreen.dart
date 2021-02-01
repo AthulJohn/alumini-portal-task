@@ -20,41 +20,68 @@ class _NotePageState extends State<NotePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.n.title}'),
+        title: Text('Note'),
+        actions: [
+          FlatButton(
+              onPressed: () async {
+                await CloudService().delet(widget.n.index.toString());
+                notes.removeWhere((element) => element.index == widget.n.index);
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.delete, color: Colors.white)),
+        ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Container(
+                  color: Colors.yellow,
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                          padding: EdgeInsets.all(8),
+                          child: Text(
+                            widget.n.title,
+                            style: TextStyle(
+                              fontSize: 25,
+                              decoration: TextDecoration.underline,
+                            ),
+                            textAlign: TextAlign.center,
+                          )),
+                      Text(
+                        widget.n.desc,
+                        style: TextStyle(
+                          fontSize: 22,
+                          decoration: TextDecoration.underline,
+                          decorationStyle: TextDecorationStyle.dotted,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
+                  )),
+            ),
+            Container(
                 padding: EdgeInsets.all(8),
                 child: Text(
-                  widget.n.desc +
-                      '\n\nCreated: ${formatdate(widget.n.create)}\nLast Edited: ${formatdate(widget.n.edit)} ',
-                  style: TextStyle(fontSize: 22),
+                  'Created: ${formatdate(widget.n.create)}\nLast Edited: ${formatdate(widget.n.edit)} ',
+                  style: TextStyle(fontSize: 15),
                 )),
-          ),
-          Row(
-            children: [
-              FlatButton(
-                  onPressed: () async {
-                    await CloudService().delet(widget.n.index.toString());
-                    notes.removeWhere(
-                        (element) => element.index == widget.n.index);
-                    Navigator.pop(context);
-                  },
-                  child: Text('Delete')),
-              FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddEvent(widget.n)),
-                    );
-                  },
-                  child: Text('Update'))
-            ],
-          )
-        ],
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.edit),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddEvent(note: widget.n)),
+          );
+        },
       ),
     );
   }

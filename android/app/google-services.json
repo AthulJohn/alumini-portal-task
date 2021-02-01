@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "844378287872",
+    "project_id": "notesapp-33dd0",
+    "storage_bucket": "notesapp-33dd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844378287872:android:b846fd4bbe3cbac03b4de5",
+        "android_client_info": {
+          "package_name": "com.athuljohn.alumni"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844378287872-hgfg1knlcnb9bg8ll4svgbh8msgbcq3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmCiyYaql6xQdq0fNh4ymXCYbaIHr9Pbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844378287872-hgfg1knlcnb9bg8ll4svgbh8msgbcq3n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

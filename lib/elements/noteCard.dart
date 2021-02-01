@@ -1,3 +1,4 @@
+import 'package:alumni/main.dart';
 import 'package:flutter/material.dart';
 import '../Screens/noteScreen.dart';
 import '../functins.dart';
@@ -9,7 +10,8 @@ class NoteCard extends StatelessWidget {
   }
 
   final Note note;
-  NoteCard({this.note});
+  final Function onChanged;
+  NoteCard({this.note, this.onChanged});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,6 +25,7 @@ class NoteCard extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) => NotePage(n: note)),
             );
+            onChanged();
           },
           child: Container(
             margin: EdgeInsets.all(8),
@@ -63,22 +66,22 @@ class NoteCard extends StatelessWidget {
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
-                Container(
-                  height: h(40, context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Created on ${formatdate(note.create)}',
-                        style: TextStyle(fontSize: 13),
-                      ),
-                      Text(
-                        'Last edit on ${formatdate(note.edit)}',
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   height: h(40, context),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Text(
+                //         'Created on ${formatdate(note.create)}',
+                //         style: TextStyle(fontSize: 13),
+                //       ),
+                //       Text(
+                //         'Last edit on ${formatdate(note.edit)}',
+                //         style: TextStyle(fontSize: 13),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),
