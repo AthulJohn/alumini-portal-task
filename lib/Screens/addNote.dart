@@ -8,7 +8,9 @@ import 'dart:io';
 
 class AddEvent extends StatefulWidget {
   final Note note;
-  AddEvent({this.note});
+  final int len;
+  final Function ins;
+  AddEvent({this.note, this.len, this.ins});
   @override
   _AddEventState createState() => _AddEventState();
 }
@@ -34,7 +36,7 @@ class _AddEventState extends State<AddEvent> {
       t1.text = addval.title;
       t2.text = addval.desc;
     } else
-      addval.index = notes.length;
+      addval.index = widget.len;
   }
 
   @override
@@ -42,6 +44,7 @@ class _AddEventState extends State<AddEvent> {
     return load
         ? Loading()
         : Scaffold(
+            backgroundColor: colors[0],
             resizeToAvoidBottomPadding: false,
             body: SafeArea(
               child: Container(
@@ -70,7 +73,7 @@ class _AddEventState extends State<AddEvent> {
                                 ),
                               ),
                               filled: true,
-                              fillColor: Color(0xFFEFEFEF)),
+                              fillColor: colors[1]),
                         )),
                     Expanded(flex: 24, child: SizedBox()),
                     Expanded(flex: 19, child: Text('Note Description')),
@@ -97,7 +100,7 @@ class _AddEventState extends State<AddEvent> {
                                 ),
                               ),
                               filled: true,
-                              fillColor: Color(0xFFEFEFEF)),
+                              fillColor: colors[1]),
                         )),
                     Expanded(flex: 24, child: SizedBox()),
                     // if (widget.note.index == -1)
@@ -138,14 +141,14 @@ class _AddEventState extends State<AddEvent> {
                     //   ),
                     Expanded(flex: 24, child: SizedBox()),
                     Expanded(
-                      flex: 45,
+                      flex: 25,
                       child: Builder(builder: (BuildContext ctxt) {
                         return FlatButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          color: Color(0xFF04294F),
+                          color: colors[1],
                           child: Text('Submit',
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(color: Colors.black)),
                           onPressed: () async {
                             bool con = await testcon();
                             if (con) {
@@ -154,6 +157,7 @@ class _AddEventState extends State<AddEvent> {
                               });
                               try {
                                 await CloudService().updateData(addval);
+                                widget.ins(addval);
                               } catch (e) {
                                 print(e);
                               }

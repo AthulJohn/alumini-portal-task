@@ -6,7 +6,9 @@ import '../values.dart';
 
 class NotePage extends StatefulWidget {
   final Note n;
-  NotePage({this.n});
+  final Function del;
+  final Function ins, onchange;
+  NotePage({this.n, this.del, this.ins, this.onchange});
   @override
   _NotePageState createState() => _NotePageState();
 }
@@ -19,43 +21,48 @@ class _NotePageState extends State<NotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: colors[0],
       appBar: AppBar(
+        backgroundColor: colors[3],
         title: Text('Note'),
         actions: [
           FlatButton(
               onPressed: () async {
                 await CloudService().delet(widget.n.index.toString());
-                notes.removeWhere((element) => element.index == widget.n.index);
+                widget.del(widget.n.index);
                 Navigator.pop(context);
               },
               child: Icon(Icons.delete, color: Colors.white)),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: Container(
-                  color: Colors.yellow,
+                  color: colors[1],
                   padding: EdgeInsets.all(8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: ListView(
+                    // crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Container(
                           padding: EdgeInsets.all(8),
                           child: Text(
                             widget.n.title,
                             style: TextStyle(
+                              fontFamily: 'Shadows',
                               fontSize: 25,
                               decoration: TextDecoration.underline,
                             ),
                             textAlign: TextAlign.center,
                           )),
+                      Divider(),
                       Text(
                         widget.n.desc,
                         style: TextStyle(
+                          fontFamily: 'Shadows',
                           fontSize: 22,
                           decoration: TextDecoration.underline,
                           decorationStyle: TextDecorationStyle.dotted,
@@ -75,12 +82,16 @@ class _NotePageState extends State<NotePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: colors[3],
         child: Icon(Icons.edit),
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddEvent(note: widget.n)),
+            MaterialPageRoute(
+                builder: (context) => AddEvent(
+                    note: widget.n, len: widget.n.index, ins: widget.ins)),
           );
+          Navigator.pop(context);
         },
       ),
     );
