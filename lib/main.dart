@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // Other Files
 import './elements/noteCard.dart';
 import './note.dart';
-import 'colors.dart';
+import './colors.dart';
 import './Screens/addNote.dart';
 import './firebase.dart';
 //Flutter Packages
